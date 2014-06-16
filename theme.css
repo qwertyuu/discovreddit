@@ -1,102 +1,150 @@
 input, #count
 {
-	display: inline;
+    display: inline;
+}
+
+#optionBox
+{
+    display:none;
+    position:absolute;
+    width:160px;
+    height:70px;
+    background-color: #dfdfdf;
+    border: 1px solid #C4C4C4;
+}
+
+select, option{
+    background-color: #ededed;
+    -webkit-border-top-left-radius: 0px;
+    -moz-border-radius-topleft: 0px;
+    border-top-left-radius: 0px;
+    -webkit-border-top-right-radius: 0px;
+    -moz-border-radius-topright: 0px;
+    border-top-right-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    -moz-border-radius-bottomright: 0px;
+    border-bottom-right-radius: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    border-bottom-left-radius: 0px;
+    color: #565656;
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 1.5em;
+    text-decoration: none;
+    text-align: left;
+}
+option{
+    text-indent: 3px;
+}
+
+select{
+
+    border: 1px solid #C4C4C4;
 }
 
 *
 {
-	text-align: center;
-	margin: auto;
-	padding: 0;
-	border-collapse: collapse;
-	font-family: "Courier New", Courier, monospace;
+    text-align: center;
+    margin: auto;
+    padding: 0;
+    border-collapse: collapse;
+    font-family: "Courier New", Courier, monospace;
 }
 
 html, body
 {
-	background: #dfdfdf;
- /* Old browsers */
-	background: -moz-linear-gradient(top,  #dfdfdf 0%, #565656 100%);
- /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dfdfdf), color-stop(100%,#565656));
- /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  #dfdfdf 0%,#565656 100%);
- /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  #dfdfdf 0%,#565656 100%);
- /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  #dfdfdf 0%,#565656 100%);
- /* IE10+ */
-	background: linear-gradient(to bottom,  #dfdfdf 0%,#565656 100%);
- /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfdfdf', endColorstr='#565656',GradientType=0 );
- /* IE6-9 */
-	background-color: #dfdfdf;
-	width: 100%;
-	height: 100%;
+    background: #dfdfdf;
+    /* Old browsers */
+    background: -moz-linear-gradient(top,  #dfdfdf 0%, #565656 100%);
+    /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#dfdfdf), color-stop(100%,#565656));
+    /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #dfdfdf 0%,#565656 100%);
+    /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #dfdfdf 0%,#565656 100%);
+    /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #dfdfdf 0%,#565656 100%);
+    /* IE10+ */
+    background: linear-gradient(to bottom,  #dfdfdf 0%,#565656 100%);
+    /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfdfdf', endColorstr='#565656',GradientType=0 );
+    /* IE6-9 */
+    background-color: #dfdfdf;
+    width: 100%;
+    height: 100%;
 }
 
 iframe
 {
-	width: 100%;
-	height: 96vh;
+    width: 100%;
+    height: 96vh;
 }
 
 #globalYT
 {
-	margin: 0;
+    margin: 0;
 }
 
 body
 {
-	margin: 0;
-	padding: 0;
-	overflow-y: hidden;
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden;
+}
+
+#loadingText
+{
+    display:none;
 }
 
 .button
 {
-	background-color: #ededed;
-	-webkit-border-top-left-radius: 0px;
-	-moz-border-radius-topleft: 0px;
-	border-top-left-radius: 0px;
-	-webkit-border-top-right-radius: 0px;
-	-moz-border-radius-topright: 0px;
-	border-top-right-radius: 0px;
-	-webkit-border-bottom-right-radius: 0px;
-	-moz-border-radius-bottomright: 0px;
-	border-bottom-right-radius: 0px;
-	-webkit-border-bottom-left-radius: 0px;
-	-moz-border-radius-bottomleft: 0px;
-	border-bottom-left-radius: 0px;
-	text-indent: 0;
-	border: 1px solid #C4C4C4;
-	display: inline-block;
-	color: #565656;
-	--font-family: Arial;
-	font-size: 15px;
-	--font-weight: bold;
-	margin-top: 5px;
-	margin-bottom: 5px;
-	height: 1.5em;
-	width: 2em;
-	text-decoration: none;
-	text-align: center;
+    background-color: #ededed;
+    -webkit-border-top-left-radius: 0px;
+    -moz-border-radius-topleft: 0px;
+    border-top-left-radius: 0px;
+    -webkit-border-top-right-radius: 0px;
+    -moz-border-radius-topright: 0px;
+    border-top-right-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    -moz-border-radius-bottomright: 0px;
+    border-bottom-right-radius: 0px;
+    -webkit-border-bottom-left-radius: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    border-bottom-left-radius: 0px;
+    text-indent: 0;
+    border: 1px solid #C4C4C4;
+    display: inline-block;
+    color: #565656;
+    font-size: 15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 1.5em;
+    width: 2em;
+    text-decoration: none;
+    text-align: center;
 }
 
 #subreddit
 {
-	width: 11em;
+    width: 11em;
 }
 
 .button:hover
 {
-	background-color: #f7f7f7;
+    background-color: #f7f7f7;
 }
 
-.button:active:not(#subreddit)
+.button:active:not(#subreddit):not(#reachNum)
 {
-	position: relative;
-	top: 1px;
+    position: relative;
+    top: 1px;
 }
 
+#reachNum
+{
 
+    width:45px;
+}
