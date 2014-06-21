@@ -16,7 +16,7 @@ using System.IO;
 
 namespace JABBERNAUT
 {
-    public enum Games { None, HotAndCold }
+    public enum Games { None, HotAndCold, CleverBot }
     class Program
     {
         static List<Utilisateur> online;

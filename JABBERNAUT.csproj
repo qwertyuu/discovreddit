@@ -35,6 +35,9 @@
     <Reference Include="agsXMPP">
       <HintPath>.\agsXMPP.dll</HintPath>
     </Reference>
+    <Reference Include="ChatterBotAPI">
+      <HintPath>..\..\..\..\Downloads\ChatterBotAPI.dll</HintPath>
+    </Reference>
     <Reference Include="crypto">
       <HintPath>.\crypto.dll</HintPath>
     </Reference>
