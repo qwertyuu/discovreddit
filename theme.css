@@ -8,7 +8,7 @@ input, #count
     display:none;
     position:absolute;
     width:160px;
-    height:70px;
+    height:auto;
     background-color: #dfdfdf;
     border: 1px solid #C4C4C4;
 }
@@ -33,6 +33,7 @@ select, option{
     margin-bottom: 5px;
     height: 1.5em;
     text-decoration: none;
+	width:137px;
     text-align: left;
 }
 option{
@@ -85,6 +86,7 @@ iframe
 #globalYT
 {
     margin: 0;
+	margin-top:5px;
 }
 
 body
@@ -96,7 +98,7 @@ body
 
 #loadingText
 {
-    display:none;
+    /*display:none;*/
 }
 
 .button
@@ -120,7 +122,7 @@ body
     color: #565656;
     font-size: 15px;
     margin-top: 5px;
-    margin-bottom: 5px;
+    /*margin-bottom: 5px;*/
     height: 1.5em;
     width: 2em;
     text-decoration: none;
@@ -129,7 +131,7 @@ body
 
 #subreddit
 {
-    width: 11em;
+    width: 250px;
 }
 
 .button:hover
@@ -147,4 +149,30 @@ body
 {
 
     width:45px;
+}
+
+#intelliWrapper{
+	position:absolute;
+	left: 50%;
+	
+}
+
+#intellisense{
+	width: 250px;
+	background-color: #dfdfdf;
+	border-left:1px solid #C4C4C4;
+	border-right:1px solid #C4C4C4;
+	position: relative; 
+	left: -50%;
+	/*border-bottom:1px solid #C4C4C4;*/
+}
+.i_element{
+	padding-top:5px;
+	padding-bottom:5px;
+	border-bottom:1px solid #C4C4C4;
+	cursor:pointer;
+}
+.i_element:hover{
+	background-color: #e9e9e9;
+	
 }

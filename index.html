@@ -10,18 +10,27 @@
     <body>
         <input class="button" type="button" value="<" onclick="prev()"/>
         <input id="options" class="button" type="button" value="~"/> 
-        <input class="button" id="subreddit" type="text" placeholder="subreddit"/>
+        <input class="button" id="subreddit" type="text" placeholder="subreddit" maxlength="512"/>
         <input class="button" id="go" type="button" value="go" onclick="download()"/>
         <input class="button" type="button" value=">" onclick="next()"/>
+		<div id="intelliWrapper"></div>
         <div id="globalYT">
             <div id="youtubeROX"></div>
         </div>
         <div id="optionBox">
-            <select>
+            <select id="group">
                 <option value="hot" selected="selected">Hot</option>
                 <option value="new">New</option>
                 <option value="top">Top</option>
                 <option value="controversial">Controversial</option>
+            </select> 
+			<select id="time">
+                <option value="hour">Last hour</option>
+                <option value="day">Last day</option>
+                <option value="week" selected="selected">Last week</option>
+                <option value="month">Last month</option>
+                <option value="year">Last year</option>
+                <option value="all">All</option>
             </select> 
             <div id="reach">
                 Reach: <input id="reachNum" class="button" type="number" name="quantity" min="10" max="100" value="50">
