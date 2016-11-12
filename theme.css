@@ -172,7 +172,7 @@ body
 	border-bottom:1px solid #C4C4C4;
 	cursor:pointer;
 }
-.i_element:hover{
+.i_element:hover,.i_element_hover{
 	background-color: #e9e9e9;
 	
 }

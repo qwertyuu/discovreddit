@@ -13,13 +13,71 @@ var limit = 50;
 var sort = "hot";
 var time = "week";
 
+var liSelected;
+var li;
+var currentAJAX;
 $('#subreddit').keyup(function(e) {
     if (e.keyCode === 13) {
-        $('#go').click();
-        $('#subreddit').blur();
+		if($("#intellisense .i_element.i_element_hover").length){
+			$("#intellisense .i_element.i_element_hover").click();
+		}
+		else{
+			$('#go').click();
+			$('#subreddit').blur();
+			
+		}
     }
+	else if(e.keyCode === 40 || e.keyCode === 38){
+		//selectionnerIntellisense();
+	}
+	else{
+		intellisense(e);
+	}
+	//console.log(e.keyCode);
 });
 
+$("#subreddit").keydown(function(e){
+	li = $('.i_element');
+	//console.log(e.keyCode);
+	if(e.keyCode === 40){
+		descendreIntellisense();
+	}
+	else if(e.keyCode === 38){
+		monterIntellisense();
+	}
+
+});
+
+function descendreIntellisense(){
+	if(liSelected){
+		liSelected.removeClass('i_element_hover');
+		next = liSelected.next();
+		if(next.length > 0){
+			liSelected = next.addClass('i_element_hover');
+		}else{
+			liSelected = li.eq(0).addClass('i_element_hover');
+		}
+    }
+	else{
+        liSelected = li.eq(0).addClass('i_element_hover');
+    }
+}
+
+function monterIntellisense(){
+	if(liSelected){
+		liSelected.removeClass('i_element_hover');
+		next = liSelected.prev();
+		if(next.length > 0){
+			liSelected = next.addClass('i_element_hover');
+		}else{
+			liSelected = li.last().addClass('i_element_hover');
+		}
+	}
+	else{
+		liSelected = li.last().addClass('i_element_hover');
+	}
+	
+}
 
 
 function download()
@@ -59,18 +117,12 @@ function download()
 						var ID = $("<textarea />").html(decodeURIComponent(parser.href)).text().match(/v\=.{11}/)[0].replace(/v\=/, "");
 					}
 					else{
-						var ID = $("<textarea />").html(decodeURIComponent(parser.href)).text().match(/\/.{11}$/)[0].replace(/\//, "");
+						var ID = $("<textarea />").html(decodeURIComponent(parser.href)).text().match(/\.be\/.{11}/)[0].slice(4);
 					}
-
-                    $.getJSON("https://gdata.youtube.com/feeds/api/videos/" + ID + "?alt=json", /*{async: false},*/ function(doto)
-                    {
-						var loadingText = $('#loadingText');
-						traite++;
-						loadingText.text('loading...'+ Math.round(traite / aTraiter * 100) + '%');
-                        var ID2 = doto.entry.link[0].href.match(/v\=.{11}/)[0].replace(/v\=/, "");
-                        TITLEs[ID2] = doto.entry.title.$t;
-                        TYPEs[ID2] = "yt";
-                    });
+					TYPEs[ID] = "yt";
+					var loadingText = $('#loadingText');
+					traite++;
+					loadingText.text('loading...'+ Math.round(traite / aTraiter * 100) + '%');
                     IDs.push(ID);
                 }
                 catch (ex)
@@ -80,19 +132,16 @@ function download()
             }
             else if (parser.hostname === "soundcloud.com")
             {
-                $.getJSON("https://api.soundcloud.com/resolve.json?url=" + parser.href + "&client_id=bbc61dafe8680da53b475f005cd60459", /*{async: false},*/ function(doto)
-                {
+				IDs.push(parser.href);
+				var loadingText = $('#loadingText');
+				traite++;
+				loadingText.text('loading...'+ Math.round(traite / aTraiter * 100) + '%');
+				TYPEs[parser.href] = "sc";
 
-					var loadingText = $('#loadingText');
-					traite++;
-					loadingText.text('loading...'+ Math.round(traite / aTraiter * 100) + '%');
-                    TITLEs[doto.uri] = doto.title;
-                    IDs.push(doto.uri);
-                    TYPEs[doto.uri] = "sc";
-                });
             }
             position++;
         });
+		
 		
 		var loadingText = $('#loadingText');
 		loadingText.text('loading...'+ Math.round(traite / aTraiter * 100) + '%');
@@ -105,6 +154,9 @@ function download()
 
 function next()
 {
+	if(currentAJAX){
+		currentAJAX.abort();
+	}
     if (currentSong < IDs.length - 1)
     {
         currentSong++;
@@ -113,7 +165,10 @@ function next()
 }
 
 function prev()
-{
+{	
+	if(currentAJAX){
+		currentAJAX.abort();
+	}
     if (currentSong > 0)
     {
         currentSong--;
@@ -127,27 +182,32 @@ function setCurrent(_index)
     // create youtube player
     if (TYPEs[IDs[_index]] === "sc")
     {
-        global.innerHTML = '<iframe id="sc-widget" scrolling="no" src="https://w.soundcloud.com/player/?url=' + IDs[_index] + '"></iframe>';
-        var iframeElement = document.querySelector('#sc-widget');
-        var widget = SC.Widget(iframeElement);
-        widget.bind(SC.Widget.Events.READY, function()
-        {
-            widget.play();
-			widget.getCurrentSound(function(son){
-				TITLEs[son.uri] = son.title;
-				window.document.title = '[' + (_index + 1) + '/' + IDs.length + '] ' + TITLEs[son.uri];
-				
-			});
+		currentAJAX = $.getJSON("https://api.soundcloud.com/resolve.json?url=" + IDs[_index] + "&client_id=bbc61dafe8680da53b475f005cd60459", /*{async: false},*/ function(doto)
+		{
+			
+			TITLEs[doto.uri] = doto.title;
+			global.innerHTML = '<iframe id="sc-widget" frameBorder="0" scrolling="no" src="https://w.soundcloud.com/player/?url=' + doto.uri + '"></iframe>';
+			var iframeElement = document.querySelector('#sc-widget');
+			var widget = SC.Widget(iframeElement);
+			widget.bind(SC.Widget.Events.READY, function()
+			{
+				widget.play();
+				widget.getCurrentSound(function(son){
+					TITLEs[son.uri] = son.title;
+					window.document.title = '[' + (_index + 1) + '/' + IDs.length + '] ' + TITLEs[son.uri];
+					
+				});
 
-        });
-        widget.bind(SC.Widget.Events.FINISH, function()
-        {
-            next();
-        });
-        if (timette !== null)
-        {
-            clearTimeout(timette);
-        }
+			});
+			widget.bind(SC.Widget.Events.FINISH, function()
+			{
+				next();
+			});
+			if (timette !== null)
+			{
+				clearTimeout(timette);
+			}
+		});
     }
     else
     {
@@ -160,13 +220,15 @@ function setCurrent(_index)
 			var vid_data = player.getVideoData();
 			TITLEs[vid_data.video_id] = vid_data.title;
             window.document.title = '[' + (_index + 1) + '/' + IDs.length + '] ' + TITLEs[vid_data.video_id];
-            player.addEventListener('onStateChange', function(event)
-            {
-                if (event.data === 0)
-                {
-                    next();
-                }
-            });
+			timette = window.setTimeout(function()
+			{
+				var state = player.getPlayerState();
+				window.document.title = '[' + (_index + 1) + '/' + IDs.length + '] ' + TITLEs[IDs[_index]];
+				if (state === -1)
+				{
+					next();
+				}
+			}, 5000);
         }
         player = new YT.Player('youtubeROX',
                 {
@@ -176,19 +238,18 @@ function setCurrent(_index)
                                 'onReady': onReady
                             }
                 });
+		player.addEventListener('onStateChange', function(event)
+        {
+                if (event.data === 0)
+                {
+                    next();
+                }
+        });
         if (timette !== null)
         {
             clearTimeout(timette);
         }
-        timette = window.setTimeout(function()
-        {
-            var state = player.getPlayerState();
-            window.document.title = '[' + (_index + 1) + '/' + IDs.length + '] ' + TITLEs[IDs[_index]];
-            if (state === -1)
-            {
-                next();
-            }
-        }, 5000);
+
     }
     var title = '[' + (_index + 1) + '/' + IDs.length + '] ';
     window.document.title = title;
@@ -204,7 +265,6 @@ $('#group').on('change', notherSort);
 $('#time').on('change', notherTime);
 $('#reachNum').on('change', beyondTheLimit);
 $('#options').on('click', toggleOptions);
-$("#subreddit").on("input", intellisense);
 $("body").on("click", ".i_element", peuplerSub);
 $("#subreddit").on("focus", intellisense);
 var Options = $('#optionBox');
@@ -212,22 +272,60 @@ var OptionsButton = $('#options');
 Options.css('left', OptionsButton.position().left);
 Options.css('top', OptionsButton.position().top + OptionsButton.height() + 8);
 
+var i_save = {};
 function intellisense(e){
-	$.getJSON("https://www.reddit.com/subreddits/search.json?q=" + e.target.value + "&limit=8", function(rep){
-		supprimerIntellisense();
-		var divIntellisense = $('<div id="intellisense"></div>');
-		if(rep.data && rep.data.children.length > 0){
-			$("#intelliWrapper").append(divIntellisense);
-			for (var i = 0, len = rep.data.children.length; i < len; i++) {
-				divIntellisense.append('<div class="i_element">' + rep.data.children[i].data.display_name + '</div>');
-			}
+	
+	if(e.target.value == "" || e.target.value == undefined || e.target.value == $('#subreddit').data('oldVal') ){
+		if(!e.target.value){
+			$('#subreddit').data('oldVal', "");
 		}
+		else{
+			$('#subreddit').data('oldVal', e.target.value);
+			
+		}
+		return;
+	}
+	if(e.target.value in i_save){
+		creerIntellisense(i_save[e.target.value].rep);
+	}
+	else{
+		//i_save[e.target.value] = {};
+		$.ajax({
+			url: "https://www.reddit.com/subreddits/search.json",
+			method: "GET",
+			data:{q:e.target.value, limit:8 },
+			dataType: "json",
+			success:function(rep){
+				creerIntellisense(rep, this.url.match(/\?q.+&/)[0].substring(3).slice(0, -1));
+			}
+		});
+	}
+	$('#subreddit').data('oldVal', e.target.value);
 
-	});
 }
+
+function creerIntellisense(rep, save=false){
+	supprimerIntellisense();
+	var divIntellisense = $('<div id="intellisense"></div>');
+	if(save){
+		i_save[save] = {rep:{data:{children:[] } } };
+	}
+	if(rep.data && rep.data.children.length > 0){
+		$("#intelliWrapper").append(divIntellisense);
+		for (var i = 0, len = rep.data.children.length; i < len; i++) {
+			if(save){
+				i_save[save].rep.data.children.push({data:{display_name: rep.data.children[i].data.display_name } });
+			}
+			divIntellisense.append('<div class="i_element">' + rep.data.children[i].data.display_name + '</div>');
+		}
+	}
+}
+
 function peuplerSub(e){
 	$("#subreddit").val(e.target.innerHTML);
 	supprimerIntellisense();
+	$('#go').click();
+	$('#subreddit').blur();
 	
 }
 
