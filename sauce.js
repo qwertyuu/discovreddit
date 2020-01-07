@@ -89,7 +89,7 @@ function download()
 	var aTraiter = limit;
 	var traite = 0;
 	loadingText.text('loading...'+ Math.round(traite / aTraiter * 100) + '%');
-    $.getJSON("http://www.reddit.com/r/" + subreddit + "/" + sort + ".json?jsonp=?&limit=" + limit + "&t=" + time, function(data)
+    $.getJSON("https://www.reddit.com/r/" + subreddit + "/" + sort + ".json?jsonp=?&limit=" + limit + "&t=" + time, function(data)
     {
 		
 		var loadingText = $('#loadingText');
