@@ -24,21 +24,16 @@ $('#subreddit').keyup(function(e) {
 		else{
 			$('#go').click();
 			$('#subreddit').blur();
-			
+
 		}
     }
-	else if(e.keyCode === 40 || e.keyCode === 38){
-		//selectionnerIntellisense();
-	}
 	else{
 		intellisense(e);
 	}
-	//console.log(e.keyCode);
 });
 
 $("#subreddit").keydown(function(e){
 	li = $('.i_element');
-	//console.log(e.keyCode);
 	if(e.keyCode === 40){
 		descendreIntellisense();
 	}
@@ -76,28 +71,24 @@ function monterIntellisense(){
 	else{
 		liSelected = li.last().addClass('i_element_hover');
 	}
-	
+
 }
 
 
 function download()
 {
     var subreddit = $("#subreddit").val();
-    //&sort=top&t=all 
-    //$.ajaxSetup({"async": false});
     var loadingText = $('#loadingText');
 	var aTraiter = limit;
 	var traite = 0;
 	loadingText.text('loading...'+ Math.round(traite / aTraiter * 100) + '%');
     $.getJSON("https://www.reddit.com/r/" + subreddit + "/" + sort + ".json?jsonp=?&limit=" + limit + "&t=" + time, function(data)
     {
-		
 		var loadingText = $('#loadingText');
         IDs = [];
         orders = new Array(data.data.children.length);
         currentSong = 0;
         TITLEs = new Array(data.data.children.length);
-        //loadingText.css('display', 'inline-block');
         var position = 1;
 		loadingText.text('loading...'+ Math.round(traite / aTraiter * 100) + '%');
         $.each(data.data.children, function(i, item)
@@ -130,7 +121,8 @@ function download()
                     console.log("HAS NO YOUTUBE URL: " + $("<textarea />").html(decodeURIComponent(parser.href)).text());
                 }
             }
-            else if (parser.hostname === "soundcloud.com")
+            // TODO: Repair soundcloud
+            else if (parser.hostname === "soundcloud.com" && false)
             {
 				IDs.push(parser.href);
 				var loadingText = $('#loadingText');
@@ -141,12 +133,11 @@ function download()
             }
             position++;
         });
-		
-		
+
+
 		var loadingText = $('#loadingText');
 		loadingText.text('loading...'+ Math.round(traite / aTraiter * 100) + '%');
-        //loadingText.css('display', 'none');
-		
+
         setCurrent(currentSong);
         height = $('body').height() - $('#subreddit').height();
     });
@@ -165,7 +156,7 @@ function next()
 }
 
 function prev()
-{	
+{
 	if(currentAJAX){
 		currentAJAX.abort();
 	}
@@ -184,7 +175,7 @@ function setCurrent(_index)
     {
 		currentAJAX = $.getJSON("https://api.soundcloud.com/resolve.json?url=" + IDs[_index] + "&client_id=bbc61dafe8680da53b475f005cd60459", /*{async: false},*/ function(doto)
 		{
-			
+
 			TITLEs[doto.uri] = doto.title;
 			global.innerHTML = '<iframe id="sc-widget" frameBorder="0" scrolling="no" src="https://w.soundcloud.com/player/?url=' + doto.uri + '"></iframe>';
 			var iframeElement = document.querySelector('#sc-widget');
@@ -195,7 +186,7 @@ function setCurrent(_index)
 				widget.getCurrentSound(function(son){
 					TITLEs[son.uri] = son.title;
 					window.document.title = '[' + (_index + 1) + '/' + IDs.length + '] ' + TITLEs[son.uri];
-					
+
 				});
 
 			});
@@ -274,14 +265,14 @@ Options.css('top', OptionsButton.position().top + OptionsButton.height() + 8);
 
 var i_save = {};
 function intellisense(e){
-	
+
 	if(e.target.value == "" || e.target.value == undefined || e.target.value == $('#subreddit').data('oldVal') ){
 		if(!e.target.value){
 			$('#subreddit').data('oldVal', "");
 		}
 		else{
 			$('#subreddit').data('oldVal', e.target.value);
-			
+
 		}
 		return;
 	}
@@ -326,7 +317,7 @@ function peuplerSub(e){
 	supprimerIntellisense();
 	$('#go').click();
 	$('#subreddit').blur();
-	
+
 }
 
 function supprimerIntellisense(){
